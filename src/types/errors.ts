@@ -1,0 +1,45 @@
+/**
+ * 统一错误码枚举与错误对象，与设计 2.2 异常映射表一一对应。
+ */
+export type ErrorCode =
+  | "E_INGEST_FORMAT"
+  | "E_INGEST_SOURCE"
+  | "E_GOVERN_CONFLICT"
+  | "E_FINANCE_INSUFFICIENT"
+  | "E_LOW_CREDIBILITY"
+  | "E_DIVISION_BY_ZERO"
+  | "E_OUT_OF_RANGE"
+  | "E_ROOT_CAUSE_UNKNOWN"
+  | "E_CONFLICT"
+  | "E_NO_DIAGNOSIS"
+  | "E_MISSING_ASSUMPTION"
+  | "E_UNCLASSIFIABLE"
+  | "E_DEPENDENCY_FAILED"
+  | "E_TASK_ABORTED";
+
+export interface AppError {
+  readonly code: ErrorCode;
+  readonly message: string;
+  readonly details?: unknown;
+}
+
+export function appError(code: ErrorCode, message: string, details?: unknown): AppError {
+  return { code, message, details };
+}
+
+export const ERROR_LABELS: Record<ErrorCode, string> = {
+  E_INGEST_FORMAT: "文件格式无法解析",
+  E_INGEST_SOURCE: "数据源不可用",
+  E_GOVERN_CONFLICT: "口径冲突无法归一",
+  E_FINANCE_INSUFFICIENT: "数据不足无法计算",
+  E_LOW_CREDIBILITY: "数据可信度不足",
+  E_DIVISION_BY_ZERO: "除零或分母缺失",
+  E_OUT_OF_RANGE: "假设参数超出合理区间",
+  E_ROOT_CAUSE_UNKNOWN: "根因待补数据",
+  E_CONFLICT: "结论冲突",
+  E_NO_DIAGNOSIS: "缺少诊断结论",
+  E_MISSING_ASSUMPTION: "测算假设缺失",
+  E_UNCLASSIFIABLE: "诉求无法归类",
+  E_DEPENDENCY_FAILED: "依赖环节失败",
+  E_TASK_ABORTED: "任务已中止",
+};
