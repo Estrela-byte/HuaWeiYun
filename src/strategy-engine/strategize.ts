@@ -120,12 +120,3 @@ function directionAction(d: StrategyDirection): string {
 function directionMetric(d: StrategyDirection): string {
   return { growth: "收入增速/毛利率", cost: "费用率/成本率", efficiency: "应收与库存周转", risk: "经营净现金流" }[d];
 }
-
-import { StrategyRanker } from "./ranker.js";
-export function rankStrategies(strategies: Strategy[]): Strategy[] {
-  const ranker = new StrategyRanker();
-  return strategies.map((s) => ({
-    ...s,
-    priorityScore: ranker.score(s.priorityBasis),
-  })).sort((a, b) => b.priorityScore - a.priorityScore);
-}
