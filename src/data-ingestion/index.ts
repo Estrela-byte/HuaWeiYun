@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { AppError } from "../types/errors.js";
-import type { DataSourceType } from "../types/domain.js";
+import type { DataSourceType, RawRecord } from "../types/domain.js";
 import type { Result } from "../types/result.js";
 import { err, ok } from "../types/result.js";
 import { CsvAdapter } from "./csv-parser.js";
@@ -20,6 +20,7 @@ export interface IngestResult {
   batchId: string;
   recordCount: number;
   rejected: RejectedRecord[];
+  records: RawRecord[];
 }
 
 function adapterFor(format: RawInput["format"]): IDataSourceAdapter | null {
@@ -49,5 +50,6 @@ export function ingest(sourceType: DataSourceType, input: Omit<RawInput, "source
     batchId: randomUUID(),
     recordCount: parsed.value.length,
     rejected: [],
+    records: parsed.value,
   });
 }

@@ -5,7 +5,7 @@ const clamp = (v: number, lo: number, hi: number): number => Math.max(lo, Math.m
 
 function scoreOf(value: Decimal, reference: number, max: number): number {
   if (reference <= 0) return 0;
-  const ratio = value.div(new Decimal(Math.round(reference * 100), 2), 6).toNumber();
+  const ratio = value.div(new Decimal(BigInt(Math.round(reference * 100)), 0), 6).toNumber();
   return clamp(Math.round(ratio * max), 0, 100);
 }
 

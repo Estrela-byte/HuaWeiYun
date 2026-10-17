@@ -1,11 +1,10 @@
 import type { AppError } from "../types/errors.js";
-import type { IndicatorSet, QualityGrade, QualityLevel, UnifiedData } from "../types/domain.js";
+import type { IndicatorSet, QualityGrade, QualityLevel, ScenarioParams, ScenarioResult, UnifiedData } from "../types/domain.js";
 import { appError } from "../types/errors.js";
 import { err, ok, type Result } from "../types/result.js";
 import { IndicatorCalculator } from "./indicator-calculator.js";
-import { ScenarioEngine, type ScenarioResult } from "./scenario-engine.js";
+import { ScenarioEngine } from "./scenario-engine.js";
 import { RiskGrader, type RiskReport } from "./risk-grader.js";
-import type { ScenarioParams } from "../types/domain.js";
 
 export { IndicatorCalculator } from "./indicator-calculator.js";
 export { ScenarioEngine } from "./scenario-engine.js";

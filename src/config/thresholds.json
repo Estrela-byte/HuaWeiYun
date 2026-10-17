@@ -1,0 +1,5 @@
+{
+  "outOfRangeMagnitude": 0.3,
+  "marginAnomalyThreshold": 0.05,
+  "expenseAnomalyThreshold": 0.5
+}

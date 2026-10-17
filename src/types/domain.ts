@@ -124,6 +124,9 @@ export type IndicatorName =
   | "operatingCashflow"
   | "breakEvenPoint";
 
+/** 异常识别通道标识：真实指标 + 数据不足类占位 */
+export type AnomalyIndicator = IndicatorName | "trend" | "benchmark";
+
 export interface MetricCaliber {
   tax: CaliberType;
   includeDepreciation: boolean;
@@ -194,13 +197,13 @@ export interface DimensionScore {
 }
 
 export interface DiagnosticAnomaly {
-  indicator: IndicatorName;
+  indicator: AnomalyIndicator;
   deviation: string; // 偏离幅度描述
   basis: string; // 识别依据
 }
 
 export interface RootCause {
-  anomalyIndicator: IndicatorName;
+  anomalyIndicator: AnomalyIndicator;
   description: string;
   evidenceIndicator: IndicatorName; // 可回溯的具体指标
   layer: "market" | "product" | "price" | "channel" | "cost_structure" | "funding_chain";

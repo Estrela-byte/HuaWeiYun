@@ -133,12 +133,13 @@ export class Decimal {
   toString(): string {
     const negative = this.scaled < 0n;
     const digits = (negative ? -this.scaled : this.scaled).toString().padStart(this.scale + 1, "0");
+    const sign = negative ? "-" : "";
     if (this.scale === 0) {
-      return (negative ? "-" : "") + digits;
+      return sign + digits;
     }
     const intPart = digits.slice(0, digits.length - this.scale);
-    const fracPart = digits.slice(digits.length - this.scale);
-    return (negative ? "-" : "") + intPart + "." + fracPart;
+    let fracPart = digits.slice(digits.length - this.scale).replace(/0+$/, "");
+    return fracPart.length === 0 ? sign + intPart : sign + intPart + "." + fracPart;
   }
 }
 
