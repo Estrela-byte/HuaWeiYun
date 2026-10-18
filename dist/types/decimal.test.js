@@ -14,7 +14,7 @@ test("Decimal 减法", () => {
     assert.equal(Decimal.fromString("1.5").sub(Decimal.fromString("0.6")).toString(), "0.9");
 });
 test("Decimal 乘法与除法", () => {
-    assert.equal(Decimal.fromString("2.5").mul(Decimal.fromString("2")).toString(), "5.0");
+    assert.equal(Decimal.fromString("2.5").mul(Decimal.fromString("2")).toString(), "5");
     assert.equal(Decimal.fromString("3").div(Decimal.fromString("4"), 4).toString(), "0.75");
 });
 test("Decimal 四舍五入", () => {
