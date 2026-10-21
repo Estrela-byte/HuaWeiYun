@@ -58,7 +58,7 @@ export class Decimal {
         if (other.scaled === 0n) {
             throw new Error("Decimal: division by zero");
         }
-        const numerator = this.scaled * 10n ** BigInt(scale + other.scale);
+        const numerator = this.scaled * 10n ** BigInt(scale + other.scale - this.scale);
         return new Decimal(numerator / other.scaled, scale);
     }
     neg() {

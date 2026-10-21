@@ -1,5 +1,11 @@
 {
   "outOfRangeMagnitude": 0.3,
   "marginAnomalyThreshold": 0.05,
-  "expenseAnomalyThreshold": 0.5
+  "expenseAnomalyThreshold": 0.5,
+  "alert": {
+    "costRatioMax": "0.40",
+    "revenueFluctuation": "0.05",
+    "grossMarginMin": "0.30",
+    "noTransactionDays": 1
+  }
 }

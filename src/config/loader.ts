@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { AlertThresholds } from "../types/alert.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -34,4 +35,7 @@ export function loadWeights(): WeightsConfig {
 
 export function loadRisk(): RiskConfig {
   return loadConfig<RiskConfig>("risk.json");
+}
+export function loadAlertThresholds(): AlertThresholds {
+  return loadConfig<{ alert: AlertThresholds }>("thresholds.json").alert;
 }

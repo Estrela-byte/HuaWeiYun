@@ -12,6 +12,9 @@ export const TOOLS = [
     { name: "orchestrate", agent: "business-advisor", description: "任务编排与 DAG 调度", module: "orchestration" },
     { name: "clarify", agent: "business-advisor", description: "需求澄清", module: "orchestration" },
     { name: "route", agent: "business-advisor", description: "任务路由", module: "orchestration" },
+    { name: "business-analysis", agent: "financial-analyst", description: "经营分析（KPI/趋势/成本结构/同环比/优势问题）", module: "business-analysis" },
+    { name: "qa", agent: "business-advisor", description: "智能问答（知识库检索 + 计算内核）", module: "knowledge" },
+    { name: "alert", agent: "business-diagnostician", description: "预警检测与推送", module: "alert" },
 ];
 export function toolsOf(agent) {
     return TOOLS.filter((t) => t.agent === agent);

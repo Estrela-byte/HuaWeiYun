@@ -1,3 +1,4 @@
+import type { AlertThresholds } from "../types/alert.js";
 /** 外置化配置加载：口径/权重/阈值以 JSON 维护，支持调整后回算 */
 export declare function loadConfig<T>(filename: string): T;
 export interface WeightsConfig {
@@ -18,3 +19,4 @@ export interface RiskConfig {
 }
 export declare function loadWeights(): WeightsConfig;
 export declare function loadRisk(): RiskConfig;
+export declare function loadAlertThresholds(): AlertThresholds;

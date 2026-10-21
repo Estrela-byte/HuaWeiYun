@@ -13,4 +13,7 @@ export function loadWeights() {
 export function loadRisk() {
     return loadConfig("risk.json");
 }
+export function loadAlertThresholds() {
+    return loadConfig("thresholds.json").alert;
+}
 //# sourceMappingURL=loader.js.map
