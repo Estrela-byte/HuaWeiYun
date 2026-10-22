@@ -1,8 +1,8 @@
 {
-  "wTitle": "20",
-  "wTag": "8",
+  "wTitle": "10",
+  "wTag": "5",
   "wContent": "1",
-  "relevanceThreshold": "9",
-  "scoreGapThreshold": "50",
-  "maxTopK": 5
+  "relevanceThreshold": "20",
+  "scoreGapThreshold": "25",
+  "maxTopK": 3
 }

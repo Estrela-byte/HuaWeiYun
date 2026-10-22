@@ -9,6 +9,7 @@ export * from "./business-analysis/index.js";
 export * from "./knowledge/index.js";
 export * from "./alert/index.js";
 export * from "./search-eval/index.js";
+export * from "./eval-calibration/index.js";
 export { AuditLogger } from "./shared/audit.js";
 export { Crypto } from "./shared/crypto.js";
 export { Storage } from "./shared/storage.js";

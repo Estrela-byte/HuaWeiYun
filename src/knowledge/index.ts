@@ -1,5 +1,6 @@
 import { KnowledgeBase } from "./knowledge-base.js";
 import { DEFAULT_DOCS } from "./default-docs.js";
+import { loadSearchPrecisionConfig } from "./search-precision-config.js";
 
 export { KnowledgeBase, tokenize } from "./knowledge-base.js";
 export { DEFAULT_DOCS } from "./default-docs.js";
@@ -23,7 +24,7 @@ export {
 export { KnowledgeReadonlySearchAdapter } from "./readonly-search-adapter.js";
 export { validateRecallGuard, type RecallGuardConclusion } from "./recall-guard.js";
 
-/** 构建含预置经营领域知识的本地知识库 */
+/** 构建含预置经营领域知识的本地知识库（检索参数经 search-precision.json 外置化加载） */
 export function defaultKnowledgeBase(): KnowledgeBase {
-  return new KnowledgeBase(DEFAULT_DOCS);
+  return new KnowledgeBase(DEFAULT_DOCS, loadSearchPrecisionConfig());
 }
