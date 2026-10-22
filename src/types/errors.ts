@@ -20,7 +20,12 @@ export type ErrorCode =
   | "E_EVAL_READONLY_VIOLATION"
   | "E_EVAL_RETRIEVAL_FAILED"
   | "E_EVAL_INDICATOR_INCOMPUTABLE"
-  | "E_EVAL_ABORTED";
+  | "E_EVAL_ABORTED"
+  | "E_SEARCH_WEIGHT_INVALID"
+  | "E_SEARCH_THRESHOLD_MISSING"
+  | "E_SEARCH_GAP_PARAM_MISSING"
+  | "E_SEARCH_RECALL_DEGRADED"
+  | "E_SEARCH_NEGATIVE_FP";
 
 export interface AppError {
   readonly code: ErrorCode;
@@ -52,4 +57,9 @@ export const ERROR_LABELS: Record<ErrorCode, string> = {
   E_EVAL_RETRIEVAL_FAILED: "检索查询失败",
   E_EVAL_INDICATOR_INCOMPUTABLE: "指标无有效样本不可计算",
   E_EVAL_ABORTED: "评估已中止",
+  E_SEARCH_WEIGHT_INVALID: "检索权重配置非法",
+  E_SEARCH_THRESHOLD_MISSING: "检索阈值配置缺失",
+  E_SEARCH_GAP_PARAM_MISSING: "得分断层参数缺失",
+  E_SEARCH_RECALL_DEGRADED: "优化导致召回率下降",
+  E_SEARCH_NEGATIVE_FP: "优化引入负样本误检",
 };
