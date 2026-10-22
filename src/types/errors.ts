@@ -15,7 +15,12 @@ export type ErrorCode =
   | "E_MISSING_ASSUMPTION"
   | "E_UNCLASSIFIABLE"
   | "E_DEPENDENCY_FAILED"
-  | "E_TASK_ABORTED";
+  | "E_TASK_ABORTED"
+  | "E_EVAL_INVALID_TESTSET"
+  | "E_EVAL_READONLY_VIOLATION"
+  | "E_EVAL_RETRIEVAL_FAILED"
+  | "E_EVAL_INDICATOR_INCOMPUTABLE"
+  | "E_EVAL_ABORTED";
 
 export interface AppError {
   readonly code: ErrorCode;
@@ -42,4 +47,9 @@ export const ERROR_LABELS: Record<ErrorCode, string> = {
   E_UNCLASSIFIABLE: "诉求无法归类",
   E_DEPENDENCY_FAILED: "依赖环节失败",
   E_TASK_ABORTED: "任务已中止",
+  E_EVAL_INVALID_TESTSET: "测试集校验失败",
+  E_EVAL_READONLY_VIOLATION: "检测到写操作已阻断",
+  E_EVAL_RETRIEVAL_FAILED: "检索查询失败",
+  E_EVAL_INDICATOR_INCOMPUTABLE: "指标无有效样本不可计算",
+  E_EVAL_ABORTED: "评估已中止",
 };

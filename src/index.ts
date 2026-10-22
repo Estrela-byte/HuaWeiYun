@@ -8,6 +8,7 @@ export * from "./orchestration/index.js";
 export * from "./business-analysis/index.js";
 export * from "./knowledge/index.js";
 export * from "./alert/index.js";
+export * from "./search-eval/index.js";
 
 export { AuditLogger, type AuditEntry } from "./shared/audit.js";
 export { Crypto } from "./shared/crypto.js";
