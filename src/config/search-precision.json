@@ -1,0 +1,8 @@
+{
+  "wTitle": "10",
+  "wTag": "5",
+  "wContent": "1",
+  "relevanceThreshold": "20",
+  "scoreGapThreshold": "25",
+  "maxTopK": 3
+}

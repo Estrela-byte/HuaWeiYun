@@ -1,0 +1,9 @@
+{
+  "marginRed": 0.05,
+  "marginYellow": 0.15,
+  "expenseRed": 0.5,
+  "expenseYellow": 0.3,
+  "turnoverRed": 2,
+  "turnoverYellow": 5,
+  "netMarginRed": 0
+}

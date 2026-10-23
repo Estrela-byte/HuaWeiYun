@@ -1,0 +1,5 @@
+# routes 目录占位文件
+# 后续步骤会在这里添加业务路由文件：
+# - users.js        用户注册、登录
+# - products.js     商品增删改查
+# - transactions.js 收支记录增删改查

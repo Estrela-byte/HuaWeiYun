@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录 - 经营管理系统</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f5f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .login-box { background: #fff; padding: 32px; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); width: 320px; }
+    h2 { text-align: center; margin-bottom: 24px; color: #333; }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; margin-bottom: 6px; color: #555; font-size: 14px; }
+    input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+    input:focus { border-color: #409eff; outline: none; }
+    button { width: 100%; padding: 10px; background: #409eff; color: #fff; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #66b1ff; }
+    .msg { margin-top: 12px; text-align: center; font-size: 14px; min-height: 20px; }
+    .msg.error { color: #f56c6c; }
+    .msg.success { color: #67c23a; }
+    .register-link { text-align: center; margin-top: 16px; font-size: 14px; }
+    .register-link a { color: #409eff; cursor: pointer; text-decoration: none; }
+    .register-link a:hover { text-decoration: underline; }
+
+    /* 注册模态框 */
+    .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 100; }
+    .modal-mask.show { display: flex; }
+    .modal { background: #fff; padding: 28px; border-radius: 8px; width: 340px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative; }
+    .modal h3 { text-align: center; margin-bottom: 20px; color: #333; }
+    .close-btn { position: absolute; top: 10px; right: 14px; color: #999; cursor: pointer; font-size: 22px; background: none; border: none; width: auto; padding: 0; line-height: 1; }
+    .close-btn:hover { color: #333; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>经营管理系统</h2>
+    <div class="form-group">
+      <label>账号</label>
+      <input type="text" id="username" placeholder="请输入账号">
+    </div>
+    <div class="form-group">
+      <label>密码</label>
+      <input type="password" id="password" placeholder="请输入密码">
+    </div>
+    <button id="loginBtn">登录</button>
+    <div class="msg" id="msg"></div>
+    <div class="register-link">
+      没有账号？<a id="toRegister">立即注册</a>
+    </div>
+  </div>
+
+  <!-- 注册模态框 -->
+  <div class="modal-mask" id="registerMask">
+    <div class="modal">
+      <button class="close-btn" id="closeRegister">×</button>
+      <h3>注册新账号</h3>
+      <div class="form-group">
+        <label>账号</label>
+        <input type="text" id="regUsername" placeholder="请设置账号">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" id="regPassword" placeholder="请设置密码">
+      </div>
+      <div class="form-group">
+        <label>店铺名称</label>
+        <input type="text" id="regShopName" placeholder="如：我的小店">
+      </div>
+      <button id="registerBtn">确认注册</button>
+      <div class="msg" id="regMsg"></div>
+    </div>
+  </div>
+
+  <script>
+    const msgEl = document.getElementById('msg');
+    // 已登录则直接跳主页
+    if (localStorage.getItem('token')) {
+      location.href = 'index.html';
+    }
+
+    // ===== 登录逻辑 =====
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      if (!username || !password) {
+        msgEl.textContent = '账号和密码不能为空';
+        msgEl.className = 'msg error';
+        return;
+      }
+      try {
+        const res = await fetch('/api/users/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (data.code === 0) {
+          localStorage.setItem('token', data.data.token);
+          msgEl.textContent = '登录成功，正在跳转...';
+          msgEl.className = 'msg success';
+          setTimeout(() => location.href = 'index.html', 500);
+        } else {
+          msgEl.textContent = data.message || '登录失败';
+          msgEl.className = 'msg error';
+        }
+      } catch (e) {
+        msgEl.textContent = '网络错误，请检查服务是否启动';
+        msgEl.className = 'msg error';
+      }
+    });
+    // 回车键登录
+    document.getElementById('password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+
+    // ===== 注册逻辑 =====
+    const registerMask = document.getElementById('registerMask');
+    const regMsgEl = document.getElementById('regMsg');
+
+    // 打开注册模态框
+    document.getElementById('toRegister').addEventListener('click', () => {
+      registerMask.classList.add('show');
+      regMsgEl.textContent = '';
+      regMsgEl.className = 'msg';
+    });
+    // 关闭注册模态框
+    document.getElementById('closeRegister').addEventListener('click', () => {
+      registerMask.classList.remove('show');
+    });
+    // 点击遮罩区域关闭
+    registerMask.addEventListener('click', e => {
+      if (e.target === registerMask) registerMask.classList.remove('show');
+    });
+
+    // 确认注册
+    document.getElementById('registerBtn').addEventListener('click', async () => {
+      const username = document.getElementById('regUsername').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+      const shop_name = document.getElementById('regShopName').value.trim();
+      if (!username || !password) {
+        regMsgEl.textContent = '账号和密码不能为空';
+        regMsgEl.className = 'msg error';
+        return;
+      }
+      try {
+        const res = await fetch('/api/users/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password, shop_name })
+        });
+        const data = await res.json();
+        if (data.code === 0) {
+          regMsgEl.textContent = '注册成功！请用新账号登录';
+          regMsgEl.className = 'msg success';
+          // 把账号回填到登录框，1.5 秒后关闭模态框
+          document.getElementById('username').value = username;
+          document.getElementById('password').value = '';
+          setTimeout(() => registerMask.classList.remove('show'), 1500);
+        } else {
+          regMsgEl.textContent = data.message || '注册失败';
+          regMsgEl.className = 'msg error';
+        }
+      } catch (e) {
+        regMsgEl.textContent = '网络错误，请检查服务是否启动';
+        regMsgEl.className = 'msg error';
+      }
+    });
+    // 注册框回车提交
+    document.getElementById('regShopName').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('registerBtn').click();
+    });
+  </script>
+</body>
+</html>
