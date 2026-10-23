@@ -15,6 +15,9 @@ app.get('/', (req, res) => {
   res.json({ code: 0, message: '经营管理工作后端已启动' });
 });
 
+// 托管前端静态页面（public 目录）
+app.use(express.static('public'));
+
 // 挂载业务路由
 app.use('/api/users', require('./routes/users'));
 app.use('/api/products', require('./routes/products'));

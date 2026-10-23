@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>首页 - 经营管理系统</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f5f5; padding: 20px; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    h1 { color: #333; font-size: 22px; }
+    .logout { color: #409eff; cursor: pointer; font-size: 14px; }
+    .card { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .card h2 { font-size: 18px; color: #333; margin-bottom: 16px; border-left: 4px solid #409eff; padding-left: 10px; }
+    .summary { display: flex; gap: 20px; }
+    .summary-item { flex: 1; text-align: center; padding: 16px; background: #f9f9f9; border-radius: 6px; }
+    .summary-item .label { font-size: 14px; color: #888; margin-bottom: 8px; }
+    .summary-item .value { font-size: 24px; font-weight: bold; }
+    .summary-item.income .value { color: #67c23a; }
+    .summary-item.expense .value { color: #f56c6c; }
+    .summary-item.profit .value { color: #409eff; }
+    .form-row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .form-row > div { flex: 1; min-width: 120px; }
+    label { display: block; margin-bottom: 4px; color: #555; font-size: 13px; }
+    input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+    .submit-btn { padding: 8px 24px; background: #409eff; color: #fff; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; }
+    .submit-btn:hover { background: #66b1ff; }
+    .msg { margin-top: 8px; font-size: 13px; min-height: 18px; }
+    .msg.error { color: #f56c6c; }
+    .msg.success { color: #67c23a; }
+    .full { flex: 2 !important; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>经营管理首页</h1>
+    <span class="logout" id="logout">退出登录</span>
+  </div>
+
+  <!-- 本月汇总 -->
+  <div class="card">
+    <h2>本月汇总（<span id="monthLabel"></span>）</h2>
+    <div class="summary">
+      <div class="summary-item income">
+        <div class="label">总收入</div>
+        <div class="value" id="totalIncome">--</div>
+      </div>
+      <div class="summary-item expense">
+        <div class="label">总支出</div>
+        <div class="value" id="totalExpense">--</div>
+      </div>
+      <div class="summary-item profit">
+        <div class="label">净利润</div>
+        <div class="value" id="netProfit">--</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新增收支流水 -->
+  <div class="card">
+    <h2>新增收支流水</h2>
+    <div class="form-row">
+      <div>
+        <label>类型</label>
+        <select id="type">
+          <option value="income">收入</option>
+          <option value="expense">支出</option>
+        </select>
+      </div>
+      <div>
+        <label>金额（元）</label>
+        <input type="number" id="amount" step="0.01" min="0" placeholder="请输入金额">
+      </div>
+      <div>
+        <label>分类</label>
+        <input type="text" id="category" placeholder="如：餐饮、销售">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="full">
+        <label>备注</label>
+        <input type="text" id="note" placeholder="可选">
+      </div>
+      <div>
+        <label>发生时间</label>
+        <input type="datetime-local" id="happenedAt">
+      </div>
+    </div>
+    <button class="submit-btn" id="submitBtn">提交</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <script>
+    // 取 Token，没有则跳登录页
+    const token = localStorage.getItem('token');
+    if (!token) {
+      location.href = 'login.html';
+    }
+
+    // 当前月份 YYYY-MM
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    const month = now.getFullYear() + '-' + pad(now.getMonth() + 1);
+    document.getElementById('monthLabel').textContent = month;
+
+    // 默认发生时间设为当前时刻
+    document.getElementById('happenedAt').value =
+      now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) +
+      'T' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+
+    // 带认证的请求封装：自动带上 Token，401 则跳登录
+    async function request(url, options = {}) {
+      options.headers = options.headers || {};
+      options.headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch(url, options);
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        location.href = 'login.html';
+        return null;
+      }
+      return res.json();
+    }
+
+    // 加载本月汇总
+    async function loadSummary() {
+      const data = await request('/api/summary/monthly?month=' + month);
+      if (!data || data.code !== 0) return;
+      const inc = Number(data.data.totalIncome) || 0;
+      const exp = Number(data.data.totalExpense) || 0;
+      document.getElementById('totalIncome').textContent = '¥' + inc.toFixed(2);
+      document.getElementById('totalExpense').textContent = '¥' + exp.toFixed(2);
+      document.getElementById('netProfit').textContent = '¥' + (inc - exp).toFixed(2);
+    }
+    loadSummary();
+
+    // 提交新增流水
+    const msgEl = document.getElementById('msg');
+    document.getElementById('submitBtn').addEventListener('click', async () => {
+      const type = document.getElementById('type').value;
+      const amount = document.getElementById('amount').value;
+      const category = document.getElementById('category').value.trim();
+      const note = document.getElementById('note').value.trim();
+      let happenedAt = document.getElementById('happenedAt').value;
+      // datetime-local 的值是 YYYY-MM-DDTHH:mm，转成数据库需要的 YYYY-MM-DD HH:mm:ss
+      if (happenedAt) {
+        happenedAt = happenedAt.replace('T', ' ') + ':00';
+      }
+      if (!amount || Number(amount) <= 0) {
+        msgEl.textContent = '金额必须大于 0';
+        msgEl.className = 'msg error';
+        return;
+      }
+      const data = await request('/api/transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, amount: Number(amount), category, note, happened_at: happenedAt })
+      });
+      if (!data) return;
+      if (data.code === 0) {
+        msgEl.textContent = '新增成功';
+        msgEl.className = 'msg success';
+        document.getElementById('amount').value = '';
+        document.getElementById('category').value = '';
+        document.getElementById('note').value = '';
+        loadSummary();
+      } else {
+        msgEl.textContent = data.message || '新增失败';
+        msgEl.className = 'msg error';
+      }
+    });
+
+    // 退出登录
+    document.getElementById('logout').addEventListener('click', () => {
+      localStorage.removeItem('token');
+      location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>
