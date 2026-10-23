@@ -1,0 +1,20 @@
+{
+  "name": "sme-i-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SME-I Manager 后端数据接口（小微企业经营管理工具）",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node --experimental-sqlite src/index.js",
+    "dev": "node --experimental-sqlite --watch src/index.js",
+    "seed": "node --experimental-sqlite src/seed.js",
+    "reset": "rm -rf data && node --experimental-sqlite src/seed.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

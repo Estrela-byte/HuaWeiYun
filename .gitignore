@@ -24,3 +24,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 后端：SQLite 数据库不入库（由 seed.js 重建），WAL/SHM 临时文件
+*.db
+*.db-wal
+*.db-shm
+# 环境变量（含密钥，禁止提交）
+.env
+.env.local
+# 归档包：已解压还原到 server/，不再入库
+*.zip
