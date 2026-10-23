@@ -79,12 +79,12 @@ test("配置校验：数字形态权重可解析", () => {
 
 test("加载配置：返回字段正确（从 JSON 或回退默认一致）", () => {
   const c = loadSearchPrecisionConfig();
-  assert.ok(c.wTitle.eq(Decimal.fromInt(20)));
-  assert.ok(c.wTag.eq(Decimal.fromInt(8)));
+  assert.ok(c.wTitle.eq(Decimal.fromInt(10)));
+  assert.ok(c.wTag.eq(Decimal.fromInt(5)));
   assert.ok(c.wContent.eq(Decimal.fromInt(1)));
-  assert.ok(c.relevanceThreshold.eq(Decimal.fromInt(9)));
-  assert.ok(c.scoreGapThreshold.eq(Decimal.fromInt(50)));
-  assert.equal(c.maxTopK, 5);
+  assert.ok(c.relevanceThreshold.eq(Decimal.fromInt(20)));
+  assert.ok(c.scoreGapThreshold.eq(Decimal.fromInt(25)));
+  assert.equal(c.maxTopK, 3);
 });
 
 test("默认配置字段正确", () => {

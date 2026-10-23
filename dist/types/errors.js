@@ -26,5 +26,10 @@ export const ERROR_LABELS = {
     E_SEARCH_GAP_PARAM_MISSING: "得分断层参数缺失",
     E_SEARCH_RECALL_DEGRADED: "优化导致召回率下降",
     E_SEARCH_NEGATIVE_FP: "优化引入负样本误检",
+    E_CALIB_INCOMPLETE_SAMPLE_KINDS: "测试集样本类型不完整",
+    E_CALIB_INVALID_ANNOTATION: "标注指向不存在的文档",
+    E_CALIB_DISTRACTOR_CONFLICT: "干扰负样本与知识库存在强对应",
+    E_CALIB_NO_FEASIBLE_CONFIG: "无可行参数组合",
+    E_CALIB_NO_DISCRIMINATION: "指标区分度不足",
 };
 //# sourceMappingURL=errors.js.map
